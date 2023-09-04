@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Erostian Word Scramble</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  
+  <script src="script.js"></script>
+  
+  <div id="translate">
+    <h2>Erostian Word Scramble</h2>
+    <p style="max-width: 300px; margin:auto; text-align: center;">
+      Write the words to be scrambled in the box below, separated by a comma.
+    </p>
+    <br>
+    <form id="scramble">
+      <textarea id="scramble-input" name="scrambleInput" rows="10" cols="30">
+        erostian,umi,piddle
+      </textarea>
+      <br>
+      <button id="scramble-submit">TRANSLATE</button>
+    </form>
+    <BR><Br>
+    <div id="scrambleBox">
+      <h1>WORD SCRAMBLE</h1>
+      <h4>Unscramble the letters to find a word!</h4>
+      <div id="outputScramble"></div>
+    </div>
+  </div>
+  
+</body>
+
+</html>
+
+<style>
+
+  h1, h2, h3, h4 {
+    text-align: center;
+  }
+  form {
+    text-align: center;
+  }
+  button {
+    padding: 10px 20px;
+  }
+
+  #scrambleBox {
+    border: 1px solid black;
+    width: 1100px;
+    margin:auto;
+    position: relative;
+  }
+  #outputScramble {
+    max-width: 1050px;
+    margin: auto;
+    position: relative;
+  }
+  #outputContainer, #outputBlank {
+    display:inline-block;
+    margin: 30px;
+    position: relative;
+  }
+  #outputFlex {
+    display:flex;
+    justify-content: space-around;
+  }
+  #outputContainer{
+    margin-left: 50px;
+  }
+  #outputBlank {
+    margin-right: 50px;
+  }
+  .outputBox {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .outputBox img {
+    width: 60px;
+  }
+  .letterBox {
+    position: relative;
+    min-width: 40px;
+    padding: 0px;
+  }
+  .letterBox p {
+    line-height: 100%;
+    font-size: 80px;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 10px;
+  }
+  .modifier {
+    position: absolute;
+    left: 0px;
+  }
+
+  .blankContainer {
+    border-bottom: 3px solid black;
+    width: 400px;
+    height: 80px;
+    margin:0px;
+    padding:0px;
+    display:block;
+    margin-bottom: 41px;
+  }
+
+
+
+  
+
+  
+</style>
+
+
+<script>
+
+  // ---------------        Translation
+
+  let formId = 'scramble';
+  let inputId = 'scramble-input';
+  let outputId = 'scrambleBox';
+
+
+  
+  let scrambleForm = document.getElementById(formId);
+  let scrambleInput = document.getElementById(inputId);
+
+  scrambleForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // parse input into arrays
+
+    let inputText = scrambleInput.value.split("");
+
+    // loop through each
+    // numbers for later
+    // if ascii between 65 and 90 (caps), convert directly to ascii
+    // if ascii between 97 and 122 (lower case), convert directly to ascii
+        // but first, check the previous letter
+        // if previous is same, instead put SKIP and add 1000 to previous
+    // otherwise, leave it
+
+    let processedArray = [];
+    let processingArray = [];
+    let wordCount = 0;
+    let index = -1;
+    
+    for (let i = 0; i < inputText.length; i++){
+      let ascii = inputText[i].charCodeAt(0);
+
+      // IF ITS A COMMA
+      if (ascii == 44){
+        processedArray.push(processingArray);
+        processingArray = ['NEW'];
+        index = -1;
+      }
+      // IF BETWEEN A AND Z
+      else if((ascii >= 65) && (ascii <= 90)){
+        processingArray.push(ascii);
+      }
+        // IF BETWEEN a AND z
+      else if ((ascii >= 97) && (ascii <= 122)){
+        if(index == -1){
+          processingArray.push(ascii);
+        }
+          // if the previous letter is the same
+        else {
+          if (processingArray[index] == ascii){
+            processingArray[index] = processingArray[index] + 1000;
+            processingArray.push('SKIP');
+          }
+          else {
+            processingArray.push(ascii);
+          }
+        }
+      }
+        // IF ITS A PLUS
+      else if (ascii == 43){
+        if(index == -1){
+          processingArray.push(ascii);
+        }
+        else if (processingArray[index] == "SKIP"){
+          processingArray[index - 1] = processingArray[index - 1] * -1;
+          processingArray.push('SKIP')
+        }
+        else {
+          processingArray[index] = processingArray[index] + 2000;
+          processingArray.push('SKIP');
+        }
+      }
+      else {
+        processingArray.push(inputText[i]);
+      }
+      index++;
+    }
+    
+    processedArray.push(processingArray)
+
+
+    // Shuffle arrays
+    for (let i = 0; i < processedArray.length; i++){
+      shuffleArray(processedArray[i]);
+    }
+
+    console.log(processedArray);
+
+    let outputString = '<h1>WORD SCRAMBLE</h1><h4>Unscramble the letters to find a word!</h4><div id="outputFlex"><div id="outputContainer">';
+
+    for (let j = 0; j < processedArray.length; j++){
+      
+      outputString = outputString + '<div class="outputBox">';
+      
+      // loop through processed array and put in html
+      for (let i = 0; i < processedArray[j].length; i++){
+        
+        // if its skip or new, do nothing
+        if ((processedArray[j][i] == "SKIP") || (processedArray[j][i] == "NEW")){
+        }
+        // if its ascii 97 to 122, we can nicely put the letters in
+        else if ((processedArray[j][i] >= 97) && (processedArray[j][i] <= 122)){
+          outputString = outputString + '<div class="letterBox"><img class="letter" src="characters/letters/' + processedArray[j][i] + '.png"></div>';
+        }
+        // if its ascii 65 - 90, its caps
+        else if ((processedArray[j][i] >= 65) && (processedArray[j][i] <= 90)){
+          outputString = outputString + '<div class="letterBox"><img class="letter" src="characters/letters/' + (processedArray[j][i] + 32) + '.png"><img class="modifier" src="characters/other/caps.png"></div>';
+        }
+        // if its between 1097 and 1122, its a double
+        else if ((processedArray[j][i] >= 1097) && (processedArray[j][i] <= 1122)){
+          outputString = outputString + '<div class="letterBox"><img class="letter" src="characters/letters/' + (processedArray[j][i] - 1000) + '.png"><img class="modifier" src="characters/other/double.png"></div>';
+        }
+        // if its between 2097 and 2122, its a plural
+        else if ((processedArray[j][i] >= 2097) && (processedArray[j][i] <= 2122)){
+          outputString = outputString + '<div class="letterBox"><img class="letter" src="characters/letters/' + (processedArray[j][i] - 2000) + '.png"><img class="modifier" src="characters/other/plural.png"></div>';
+        }
+        // else if its between -1097 and -1122, its a double plural
+        else if ((processedArray[j][i] <= -1097) && (processedArray[j][i] >= -1122)){
+          outputString = outputString + '<div class="letterBox"><img class="letter" src="characters/letters/' + ((processedArray[j][i]*-1) - 1000) + '.png"><img class="modifier" src="characters/other/double.png"><img class="modifier" src="characters/other/plural.png"></div>';
+        }
+        // else, just put letter in
+        else {
+          outputString = outputString + '<div class="letterBox"><p>' + processedArray[j][i] + '</p></div>'
+        }
+      }
+
+      outputString = outputString + '</div>';
+      
+    }
+
+    outputString = outputString + '</div>';
+
+
+    // The div for the space to write
+    outputString = outputString + '<div id="outputBlank">';
+    for (i = 0; i < processedArray.length; i++){
+      outputString = outputString + '<div class=blankContainer></div>';
+    }
+
+    
+    outputString = outputString + '</div></div>';
+
+    let outputScramble = document.getElementById(outputId);
+    outputScramble.innerHTML = outputString;
+
+    
+    
+  });
+
+
+  /* Randomize array in-place using Durstenfeld shuffle algorithm */
+  function shuffleArray(array) {
+      for (var i = array.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
+      }
+  }
+  
+  
+  
+</script>

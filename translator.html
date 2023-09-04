@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Erostian Games</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  
+  <script src="script.js"></script>
+  
+  <div id="translate">
+    <h2>Erostian Translator</h2>
+    <form id="translator">
+      <textarea id="translator-input" name="translatorInput" rows="30" cols="10"></textarea>
+      <br>
+      <button id="translator-submit">TRANSLATE</button>
+    </form>
+    <BR><Br>
+    <div id="translationBox">
+      <div id="outputTranslation"></div>
+    </div>
+  </div>
+  <div id="sudoku">
+    <h2>Erostian Sudoku</h2>
+    <p style="max-width: 300px; margin:auto; text-align: center;">
+      Yes you can change the numbers :)<Br>
+      <b>but</b><br>
+      There has to be 9 characters + new line for each or it gets confused
+      
+    </p>
+    <br>
+    
+    <form id="sudoku-generator">
+      <textarea id="sudoku-input" name="sudokuInput" rows="10" cols="9">3--72----
+  --1---534
+  95-4---8-
+  6-2-738--
+  4--9-6--1
+  --725-3-9
+  -8---7-92
+  764---1--
+  ----18--3
+    </textarea>
+      <br>
+      <button id="sudoku-submit">MAKE SUDOKU</button>
+    </form>
+    <br><BR><Br>
+    <div id="sudokuBox">
+      <div id="outputSudoku"></div>
+    </div>
+  </div>
+  
+</body>
+
+</html>
+
+<style>
+
+  h2 {
+    text-align: center;
+  }
+  form {
+    text-align: center;
+  }
+  button {
+    padding: 10px 20px;
+  }
+
+  #outputSudoku table {
+    border-collapse: collapse;
+    border-width: 2px;
+    border-color: black;
+    margin: auto;
+  }
+  #outputSudoku table td {
+    width: 50px;
+    height: 50px;
+    border: 1px solid gray;
+    padding: 0px;
+    line-height: 0px;
+  }
+  #outputSudoku table td img {
+    width: 100%;
+  }
+  #outputSudoku tr:nth-child(3) td  {
+    border-bottom-width: 2px;
+    border-bottom-color: black;
+  }
+  #outputSudoku tr:nth-child(6) td  {
+    border-bottom-width: 2px;
+    border-bottom-color: black;
+  }
+  #outputSudoku td:nth-child(3) {
+    border-right-width: 2px;
+    border-right-color: black;
+  }
+  #outputSudoku td:nth-child(6) {
+    border-right-width: 2px;
+    border-right-color: black;
+  }
+
+  #sudokuBox {
+    padding: 10%;
+  }
+
+
+  
+
+  
+</style>
+
+
+<script>
+
+  // ---------------        Translation
+  function (formId, inputId, outputId){
+    let translatorForm = document.getElementById("formId");
+    let translatorInput = document.getElementById("inputId");
+
+    translatorForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // parse input into arrays
+
+    let inputArray = sudokuInput.value.split("");
+      
+  }
+  
+  // ---------------        Script for sudoku game
+  //
+  //
+  // on submit:
+  const sudokuForm = document.getElementById("sudoku-generator");
+  const sudokuInput = document.getElementById("sudoku-input");
+  sudokuForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // parse input into arrays
+
+    let inputArray = sudokuInput.value.split("");
+
+
+    // put them into a table if there is enough
+
+    let outputString = "<table>";
+    if (inputArray.length < 89){
+      outputString="<p>Not enough arguments to make a sudoku!</p>"
+    }
+    if (inputArray.length == 89){
+      outputString="<p>Make sure there is a new line character (enter) after the last line</p>"
+    }
+    else {
+      let count = 0;
+      for (let r = 0; r < 9; r++){
+        outputString = outputString + "<tr>"
+        for (let c = 0; c < 10; c++){
+  
+          if (inputArray[count] =="\n"){
+          }
+          else {
+            
+            outputString = outputString + "<td>"
+            if((inputArray[count] == "1") || (inputArray[count] == "2") || (inputArray[count] == "3") || (inputArray[count] == "4") || (inputArray[count] == "5") || (inputArray[count] == "6") || (inputArray[count] == "7") || (inputArray[count] == "8") || (inputArray[count] == "9")){
+              outputString = outputString + "<img src='characters/numbers/" + inputArray[count] + 
+              ".png'>";
+            }
+            else {}
+            outputString = outputString + "</td>";
+            
+          }
+          
+          count++;
+          
+        }
+        outputString = outputString + "</tr>";
+      }
+  
+      outputString = outputString + "</table>";
+    }
+  
+
+    let outputSudoku = document.getElementById("outputSudoku");
+    outputSudoku.innerHTML = outputString;
+
+
+  });
+
+
+  // -------------          Script for word scramble
+  
+
+  
+</script>
