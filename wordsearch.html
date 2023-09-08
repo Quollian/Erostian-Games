@@ -2,45 +2,40 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Erostian Wordsearch</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="author" content="@quollian on IG">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Erostian Games</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="script.js"></script>
 </head>
 
-<body>
+<body onload="normalNav(['wordsearch'])">
+    
+    <script src="/nav.js"></script>
+    <div id="navigation"></div>
   
-  <script src="script.js"></script>
-  
-  <div id="wordsearch">
+  <div class="content" id="wordsearch">
     <h2>Erostian Word Search</h2>
     <p style="max-width: 300px; margin:auto; text-align: center;">
-      Word searches must be 12x12
+      Word searches must be 12x12<br>
+      You can use <a href="https://puzzlemaker.discoveryeducation.com/word-search" target="_blank">this site</a> and copy in the results.
       
     </p>
     <br>
     
     <form id="search-generator">
-      <textarea id="search-input" name="searchInput" rows="13" cols="12">wcquihaistre
-iwruounyfoow
-fupiddlekmtw
-kwitebleuetj
-ynmrtznupcgz
-chudnicguhlo
-qzppufgqbmos
-sukirhyeihrc
-xxixhybcpupf
-xpdnoehcradw
-vgyukmzycbus
-zbbxpiafzqab
-
-    </textarea>
+      <textarea id="search-input" name="searchInput" rows="13" cols="12">wcquihaistre&#13;&#10;iwruounyfoow&#13;&#10;fupiddlekmtw&#13;&#10;kwitebleuetj&#13;&#10;ynmrtznupcgz&#13;&#10;chudnicguhlo&#13;&#10;qzppufgqbmos&#13;&#10;sukirhyeihrc&#13;&#10;xxixhybcpupf&#13;&#10;xpdnoehcradw&#13;&#10;vgyukmzycbus&#13;&#10;zbbxpiafzqab
+      </textarea>
+      <textarea id="answers-input" name="answersInput" rows="13" cols="12">archeon,glorp,inder,kuru,piddle,quinki,umi</textarea>
       <br>
       <button id="search-submit">MAKE WORDSEARCH</button>
     </form>
-    <br><BR><Br>
-    <div id="searchBox">
+    
+    <br>
+    <div class="outputtedContent" id="searchBox">
       <div id="outputSearch"></div>
+      <div id="outputAnswers"></div>
     </div>
   </div>
   
@@ -83,6 +78,17 @@ zbbxpiafzqab
     padding: 10%;
   }
 
+  .answers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 700px;
+    margin: auto;
+  }
+  .answerWord {
+    margin: 0px 40px;
+    font-size: 20px;
+  }
 
   
 
@@ -93,18 +99,21 @@ zbbxpiafzqab
 <script>
 
   
-  // ---------------        Script for sudoku game
+  // --------------- 
   //
   //
   // on submit:
   const searchForm = document.getElementById("search-generator");
   const searchInput = document.getElementById("search-input");
+  const answersInput = document.getElementById("answers-input");
   searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     // parse input into arrays
 
     let inputArray = searchInput.value.split("");
+    let answersArray = answersInput.value.split(",");
+    console.log(answersArray);
 
 
     // put them into a table if there is enough
@@ -148,8 +157,21 @@ zbbxpiafzqab
     let outputSearch = document.getElementById("outputSearch");
     outputSearch.innerHTML = outputString;
 
+    // Handle the answers
+    outputAString = '<div class="answers">';
+
+    for (let i = 0; i < answersArray.length; i++){
+      outputAString = outputAString + '<div class="answerWord"><p>' + answersArray[i] + '</p></div>'
+    }
+
+    outputAString = outputAString + "</div>";
+    
+    let outputAnswers = document.getElementById("outputAnswers");
+    outputAnswers.innerHTML = outputAString;
+    
 
   });
 
+  
   
 </script>

@@ -2,31 +2,32 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Erostian Word Scramble</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="author" content="@quollian on IG">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Erostian Games</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="script.js"></script>
 </head>
 
-<body>
+<body onload="normalNav(['scramble'])">
+    
+    <script src="/nav.js"></script>
+    <div id="navigation"></div>
   
-  <script src="script.js"></script>
-  
-  <div id="translate">
+  <div class="content" id="scramble">
     <h2>Erostian Word Scramble</h2>
     <p style="max-width: 300px; margin:auto; text-align: center;">
       Write the words to be scrambled in the box below, separated by a comma.
     </p>
     <br>
     <form id="scramble">
-      <textarea id="scramble-input" name="scrambleInput" rows="10" cols="30">
-        erostian,umi,piddle
-      </textarea>
+      <textarea id="scramble-input" name="scrambleInput" rows="10" cols="30">erostian,umi,piddle</textarea>
       <br>
-      <button id="scramble-submit">TRANSLATE</button>
+      <button id="scramble-submit">SCRAMBLE</button>
     </form>
     <BR><Br>
-    <div id="scrambleBox">
+    <div class="outputtedContent" id="scrambleBox">
       <h1>WORD SCRAMBLE</h1>
       <h4>Unscramble the letters to find a word!</h4>
       <div id="outputScramble"></div>

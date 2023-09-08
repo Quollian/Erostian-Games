@@ -2,17 +2,20 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Erostian Sudoku</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="author" content="@quollian on IG">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Erostian Games</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="script.js"></script>
 </head>
 
-<body>
+<body onload="normalNav(['sudoku'])">
+    
+    <script src="/nav.js"></script>
+    <div id="navigation"></div>
   
-  <script src="script.js"></script>
-  
-  <div id="sudoku">
+  <div class="content" id="sudoku">
     <h2>Erostian Sudoku</h2>
     <p style="max-width: 300px; margin:auto; text-align: center;">
       Yes you can change the numbers :)<Br>
@@ -23,21 +26,12 @@
     <br>
     
     <form id="sudoku-generator">
-      <textarea id="sudoku-input" name="sudokuInput" rows="10" cols="9">3--72----
-  --1---534
-  95-4---8-
-  6-2-738--
-  4--9-6--1
-  --725-3-9
-  -8---7-92
-  764---1--
-  ----18--3
-    </textarea>
+      <textarea id="sudoku-input" name="sudokuInput" rows="10" cols="9">3--72----&#13;&#10;--1---534&#13;&#10;95-4---8-&#13;&#10;6-2-738--&#13;&#10;4--9-6--1&#13;&#10;--725-3-9&#13;&#10;-8---7-92&#13;&#10;764---1--&#13;&#10;----18--3&#13;&#10;</textarea>
       <br>
       <button id="sudoku-submit">MAKE SUDOKU</button>
     </form>
     <br><BR><Br>
-    <div id="sudokuBox">
+    <div class="outputtedContent" id="sudokuBox">
       <div id="outputSudoku"></div>
     </div>
   </div>

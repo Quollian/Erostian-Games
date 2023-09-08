@@ -1,4 +1,72 @@
-html {
-  height: 100%;
+body {
+  background-color: #bedad1;
+}
+
+.content {
+  border-radius: 20px;
+  max-width: 1200px;
+  padding:35px;
+  margin: 20px auto;
+  background-color: #fbf4ea;
+}
+
+/* ------------------ Styling for the nav bar -----------------*/
+
+
+nav { 
+  margin: 0px;
+  height: auto;
   width: 100%;
 }
+
+/* The nav bar is basically a list of links */
+nav ul {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color:#75615c;
+  top: 0;
+  left: 0;
+  list-style-type: none;
+  width: 100%;
+}
+nav li {
+  float: left;
+}
+nav li a {
+  display: block;
+  color: #f3ecdc;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  font-family: Courier, monospace;
+}
+
+/* Background of links goes lighter on hover, except active one */
+nav li a:hover:not(.active) {
+  background-color: #b9928b;
+  color: white;
+}
+
+/* The bg on the active page changes to light and the text goes to accent colour */
+.active {
+  background-color: #b9928b;
+  color: white;
+}
+
+/* Last link has different behaviour tho */
+nav ul li:last-of-type a:hover {
+  background-color: #75615c;
+}
+nav ul li:last-of-type a {
+  padding: 16px;
+  font-size: 14px;
+  color: white;
+}
+
+
+.outputtedContent {
+  background-color: white;
+}
+

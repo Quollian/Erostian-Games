@@ -2,17 +2,20 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Erostian Cryptogram</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="author" content="@quollian on IG">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Erostian Games</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="script.js"></script>
 </head>
 
-<body>
+<body onload="normalNav(['cryptogram'])">
+    
+    <script src="/nav.js"></script>
+    <div id="navigation"></div>
   
-  <script src="script.js"></script>
-  
-  <div id="cryptogram">
+  <div class="content" id="cryptogram">
     <h2>Erostian Cryptogram</h2>
     <p style="max-width: 300px; margin:auto; text-align: center;">
       Write the sentence to be cryptogramed in the box below
@@ -24,9 +27,9 @@
       <button id="crypto-submit">CREATE</button>
     </form>
     <BR><Br>
-    <div id="cryptoBox">
+    <div class="outputtedContent" id="cryptoBox">
       <h1>CRYPTOGRAM</h1>
-      <h4>Uncover the sentence by breaking the code!</h4>
+      <h4>Uncover the sentence by breaking the code!</h4><Br><BR><BR>
       <div id="outputCrypto"></div>
     </div>
   </div>
@@ -70,7 +73,7 @@
   .outputBox {
     display: flex;
     flex-wrap: wrap;
-    margin: 10px 20px;
+    margin: 0px 20px;
   }
   .outputBox img {
     width: 40px;
@@ -80,7 +83,6 @@
     min-width: 40px;
     padding: 0px;
     margin: 0px 5px;
-    border-top: 2px solid black;
   }
   .letterBox p {
     line-height: 100%;
@@ -112,6 +114,23 @@
     width: 40px;
     height: 40px;
     border: 2px solid gray;
+    text-align: center;
+  }
+  .blankBox img {
+    width: 21px;
+    opacity: 0%;
+  }
+
+  #hideAnswers {
+    margin: 20px;
+  }
+
+  .ans {
+    display:block;
+    opacity: 0;
+  }
+  .clue {
+    border-top: 2px solid black;
   }
 
 
@@ -202,7 +221,7 @@
 
     console.log(processedArray);
 
-    let outputString = '<h1>CRYPTOGRAM</h1><h4>Uncover the sentence by breaking the code!</h4>';
+    let outputString = '<h1>CRYPTOGRAM</h1><h4>Uncover the sentence by breaking the code!</h4><BR><br><br>';
 
 
     outputString = outputString + '<div id="outputContainer">';
@@ -210,16 +229,28 @@
     for (let j = 0; j < processedArray.length; j++){
       
       outputString = outputString + '<div class="outputBox">';
+
+      
       
       // loop through processed array and put in html
       for (let i = 0; i < processedArray[j].length; i++){
+
+        // find out what the letter is actually supposed to be
+        let properLetter;
+        for (let k = 0; k < asciibet.length; k++){
+          console.log(processedArray[j][i]);
+          if (processedArray[j][i] == asciibet[k]){
+            properLetter = reassigned[k];
+          }
+        }
+        
         
         // if its skip or new, do nothing
         if ((processedArray[j][i] == "SKIP") || (processedArray[j][i] == "NEW")){
         }
         // if its ascii 97 to 122, we can nicely put the letters in
         else if ((processedArray[j][i] >= 97) && (processedArray[j][i] <= 122)){
-          outputString = outputString + '<div class="letterBox"><img class="letter" src="characters/letters/' + processedArray[j][i] + '.png"></div>';
+          outputString = outputString + '<div class="letterBox"><a onclick="showHide(\''+ properLetter + '\', \'.8\')" class="ans ' + properLetter + '"><img class="letter" src="characters/letters/' + properLetter + '.png"></a><img class="clue letter" src="characters/letters/' + processedArray[j][i] + '.png"></div>';
         }
         // if its ascii 65 - 90, its caps
         else if ((processedArray[j][i] >= 65) && (processedArray[j][i] <= 90)){
@@ -247,10 +278,11 @@
       
     }
 
-    outputString = outputString + '<br><Br><div id="blanks">';
+    outputString = outputString + '<br><Br><br><div id="blanks">';
 
     for (let i = 0; i < asciibet.length; i++){
-      outputString = outputString + '<div class="checkBox"><div class="blankBox"></div><img class="letter" src="characters/letters/' + asciibet[i] + '.png"></div>';
+
+      outputString = outputString + '<div class="checkBox"><div class="blankBox"><img onclick="showHide(\'' + reassigned[i] + '\', \'.8\')" class="answer ' + reassigned[i] + '" src="characters/letters/' + reassigned[i] + '.png"></div><img class="letter" src="characters/letters/' + asciibet[i] + '.png"></div>';
     }
 
     
@@ -272,6 +304,19 @@
           array[i] = array[j];
           array[j] = temp;
       }
+  }
+
+  /* change visibility of element on click */
+  function showHide(className, maxOpacity){
+    const collection = document.getElementsByClassName(className);
+      for (let i = 0; i < collection.length; i++) {
+        if (collection[i].style.opacity == "0"){
+          collection[i].style.opacity = maxOpacity;
+        }
+        else {
+          collection[i].style.opacity = "0";
+        }
+    }
   }
   
   
