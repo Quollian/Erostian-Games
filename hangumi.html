@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="@quollian on IG">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Erostian Games</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="script.js"></script>
+</head>
+
+<body onload="normalNav(['hangman'])">
+
+    <script src="/nav.js"></script>
+    <div id="navigation"></div>
+
+  <div class="content" id="hangman">
+    <h2>Erostian Hangman</h2>
+    <p style="max-width: 300px; margin:auto; text-align: center;">
+      Guess the letters before Benji finishes drawing his umi!
+
+    </p>
+    <br>
+
+    <br><BR><Br>
+    
+    <div class="game-modal">
+        <div class="content">
+            <!--<img src="#" alt="gif">-->
+            <h4>Game Over!</h4>
+            <p>The correct word was: <b>rainbow</b></p>
+            <button class="play-again">Play Again</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="hangman-box">
+            <img src="#" draggable="false" alt="hangman-img">
+        </div>
+        <div class="game-box">
+            <ul class="word-display"></ul>
+            <!--<h4 class="hint-text">Hint: <b></b></h4>
+            <h4 class="guesses-text">Incorrect guesses: <b></b></h4>-->
+            <div class="keyboard"></div>
+        </div>
+    </div>
+    
+  </div>
+
+</body>
+
+</html>
+
+<style>
+
+   h1, h2, h3, h4 {
+    text-align: center;
+  }
+
+  button {
+    padding: 10px 20px;
+  }
+
+  .container {
+      display: flex;
+      gap: 70px;
+      padding: 0px;
+      background-image: url("hangman/bg.jpg");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      border-radius: 10px;
+      align-items: flex-end;
+      justify-content: space-between;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      min-width: 400px;
+  }
+  .hangman-box {
+    max-width: 40%;
+    height: 100%;
+  }
+  .hangman-box img {
+      user-select: none;
+      height: 100%;
+      z-index: 0;
+  }
+  .hangman-box h1 {
+      font-size: 1.45rem;
+      text-align: center;
+      margin-top: 20px;
+      text-transform: uppercase;
+  }
+  .game-box .word-display {
+      gap: 10px;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 0px;
+  }
+  .word-display .letter {
+      width: 30px;
+      font-size: 2rem;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      border-bottom: 3px solid #fff;
+  }
+  .word-display .letter.guessed {
+      margin: -92px 0 0px;
+      border-color: transparent;
+      border-bottom: 3px solid #fff;
+  }
+  .word-display .letter.guessed img {
+    margin-bottom:-15px;
+  }
+  .game-box {
+    height: 100%;
+    padding-bottom: 10%;
+    padding-right: 10%;
+    width: 50%;
+    z-index: 100;
+  }
+  .game-box h4 {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+  }
+  .game-box h4 b {
+      font-weight: 600;
+  }
+  .game-box .guesses-text b {
+      color: #ff0000;
+  }
+  .displayLetter {
+    width: 100%;
+  }
+  
+  .game-box .keyboard {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      justify-content: center;
+  }
+  :where(.game-modal, .keyboard) button {
+      color: #fff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      text-transform: uppercase;
+      background: #75615c;
+  }
+  .keyboardImg {
+    width: 100%;
+  }
+  .keyboard button {
+      padding: 3px;
+      width: calc(100% / 9 - 5px);
+      height: 70px;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+  }
+  .keyboard button[disabled] {
+      pointer-events: none;
+      opacity: 0.6;
+  }
+  :where(.game-modal, .keyboard) button:hover {
+      background: #b9928b;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+  }
+  .game-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 0 10px;
+      transition: opacity 0.4s ease;
+  }
+  .game-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+      transition: opacity 0.4s 0.4s ease;
+  }
+  .game-modal .content {
+      padding: 30px;
+      max-width: 420px;
+      width: 100%;
+      border-radius: 10px;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  .game-modal img {
+      max-width: 130px;
+      margin-bottom: 20px;
+  }
+  .game-modal img[src="images/victory.gif"] {
+      margin-left: -10px;
+  }
+  .game-modal h4 {
+      font-size: 1.53rem;
+  }
+  .game-modal p {
+      font-size: 1.15rem;
+      margin: 15px 0 30px;
+      font-weight: 500;
+  }
+  .game-modal p b {
+      color: #5E63BA;
+      font-weight: 600;
+  }
+  .game-modal button {
+      padding: 12px 23px;
+  }
+
+  @media (max-width: 800px) {
+      .container {
+          flex-direction: column-reverse;
+          padding: 30px 15px;
+          align-items: center;
+          gap: 0px;
+      }
+      .hangman-box img {
+          text-align:left;
+          margin-left: -20px;
+          margin-top: -100px;
+          height: 500px;
+          position: relative;
+      }
+      .hangman-box {
+          align-self: flex-start;
+      }
+      .game-box {
+          padding: 170px 0px 0px 0px;
+          width: 90%;
+      }
+
+      .word-display .letter.guessed {
+          margin: -68px 0 25px;
+      }
+      .game-modal img {
+          max-width: 120px;
+      }
+      .game-modal h4 {
+          font-size: 1.45rem;
+      }
+      .game-modal p {
+          font-size: 1.1rem;
+      }
+      .game-modal button {
+          padding: 10px 18px;
+      }
+  }
+
+  /*@media (max-width: 500px) {
+    .hangman-box img {
+        text-align:left;
+        margin-left: -20px;
+        margin-top: -70px;
+        height: 300px;
+        position: relative;
+    }
+  }*/
+  
+
+
+
+
+
+</style>
+
+
+<script>
+
+
+  // ---------------        Script for hangman game
+  //
+  //
+
+  // Word List:
+  const wordList = [
+      {
+          word: "umi",
+          hint: "The favourite creation of Ero."
+      },
+      {
+          word: "erost",
+          hint: "The planet we call home."
+      },
+      {
+          word: "leined",
+          hint: "The month of high tide season"
+      },
+      {
+          word: "evolution",
+          hint: "Uses a special stone."
+      },
+      {
+          word: "feyndeer",
+          hint: "Umi who provides warmth in the tundra."
+      },
+      {
+          word: "abyssius",
+          hint: "Vengeful, bell wearing demigod"
+      },
+      {
+          word: "cupia",
+          hint: "A loving capa."
+      },
+      {
+          word: "burrow",
+          hint: "Nice place for a nest underground."
+      },
+      {
+          word: "mushrumi",
+          hint: "An umi affected by a mushroom spore."
+      },
+      {
+          word: "fairyfly",
+          hint: "Creature formed from magicules."
+      },
+      {
+          word: "quinki",
+          hint: "Small desert creature."
+      },
+  ];
+
+
+  const wordDisplay = document.querySelector(".word-display");
+  //const guessesText = document.querySelector(".guesses-text b");
+  const keyboardDiv = document.querySelector(".keyboard");
+  const hangmanImage = document.querySelector(".hangman-box img");
+  const gameModal = document.querySelector(".game-modal");
+  const playAgainBtn = gameModal.querySelector("button");
+
+  // Initializing game variables
+  let currentWord, correctLetters, wrongGuessCount;
+  const maxGuesses = 12;
+
+  const resetGame = () => {
+      // Ressetting game variables and UI elements
+      correctLetters = [];
+      wrongGuessCount = 0;
+      hangmanImage.src = "hangman/hangman1.png";
+      //guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
+      wordDisplay.innerHTML = currentWord.split("").map(() => `<li class="letter"></li>`).join("");
+      keyboardDiv.querySelectorAll("button").forEach(btn => btn.disabled = false);
+      gameModal.classList.remove("show");
+  }
+
+  const getRandomWord = () => {
+      // Selecting a random word and hint from the wordList
+      const { word, hint } = wordList[Math.floor(Math.random() * wordList.length)];
+      currentWord = word; // Making currentWord as random word
+      //document.querySelector(".hint-text b").innerText = hint;
+      resetGame();
+  }
+
+  const gameOver = (isVictory) => {
+      // After game complete.. showing modal with relevant details
+      const modalText = isVictory ? `You found the word:` : 'The correct word was:';
+      //gameModal.querySelector("img").src = `images/${isVictory ? 'victory' : 'lost'}.gif`;
+      gameModal.querySelector("h4").innerText = isVictory ? 'Congrats!' : 'Game Over!';
+      gameModal.querySelector("p").innerHTML = `${modalText} <b>${currentWord}</b>`;
+      gameModal.classList.add("show");
+  }
+
+  const initGame = (button, clickedLetter) => {
+      // Checking if clickedLetter is exist on the currentWord
+      if(currentWord.includes(clickedLetter)) {
+          // Showing all correct letters on the word display
+          [...currentWord].forEach((letter, index) => {
+              if(letter === clickedLetter) {
+                  correctLetters.push(letter);
+                  wordDisplay.querySelectorAll("li")[index].innerHTML = '<img src="/characters/whiteLetters/' + letter.charCodeAt(0) + '.png" class="displayLetter">';
+                  wordDisplay.querySelectorAll("li")[index].classList.add("guessed");
+              }
+          });
+      } else {
+          // If clicked letter doesn't exist then update the wrongGuessCount and hangman image
+          wrongGuessCount++;
+          hangmanImage.src = `hangman/hangman${wrongGuessCount + 1}.png`;
+      }
+      button.disabled = true; // Disabling the clicked button so user can't click again
+      //guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
+
+      // Calling gameOver function if any of these condition meets
+      if(wrongGuessCount === maxGuesses) return gameOver(false);
+      if(correctLetters.length === currentWord.length) return gameOver(true);
+  }
+
+  // Creating keyboard buttons and adding event listeners
+  for (let i = 97; i <= 122; i++) {
+      const button = document.createElement("button");
+      button.style.backgroundImage = 'url("/characters/whiteLetters/' + i + '.png")';
+      keyboardDiv.appendChild(button);
+      button.addEventListener("click", (e) => initGame(e.target, String.fromCharCode(i)));
+  }
+
+  getRandomWord();
+  playAgainBtn.addEventListener("click", getRandomWord);
+
+
+</script>

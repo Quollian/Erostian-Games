@@ -103,11 +103,19 @@
   .blankContainer {
     border-bottom: 3px solid black;
     width: 400px;
-    height: 80px;
+    height: 90px;
     margin:0px;
     padding:0px;
     display:block;
-    margin-bottom: 41px;
+    margin-bottom: 31px;
+  }
+  .blankContainer .letterBox{
+    display: inline-block;
+    opacity: 0px;
+  }
+  .blankContainer .letterBox img {
+    margin-top: 20px;
+    max-width: 40px;
   }
 
 
@@ -203,12 +211,17 @@
     processedArray.push(processingArray)
 
 
+    // save the old array
+    const oldArray = JSON.parse(JSON.stringify(processedArray));
+    console.log('old array: ' + oldArray);
+    
     // Shuffle arrays
     for (let i = 0; i < processedArray.length; i++){
       shuffleArray(processedArray[i]);
     }
 
-    console.log(processedArray);
+    console.log('processed array: ' + processedArray);
+    console.log('old array: ' + oldArray);
 
     let outputString = '<h1>WORD SCRAMBLE</h1><h4>Unscramble the letters to find a word!</h4><div id="outputFlex"><div id="outputContainer">';
 
@@ -257,12 +270,47 @@
 
     // The div for the space to write
     outputString = outputString + '<div id="outputBlank">';
-    for (i = 0; i < processedArray.length; i++){
-      outputString = outputString + '<div class=blankContainer></div>';
+    for (j = 0; j < oldArray.length; j++){
+      outputString = outputString + '<div class=blankContainer>';
+
+      // loop through processed array and put in html
+      for (let i = 0; i < oldArray[j].length; i++){
+
+        // if its skip or new, do nothing
+        if ((oldArray[j][i] == "SKIP") || (oldArray[j][i] == "NEW")){
+        }
+        // if its ascii 97 to 122, we can nicely put the letters in
+        else if ((oldArray[j][i] >= 97) && (oldArray[j][i] <= 122)){
+          outputString = outputString + '<div class="letterBox ans"><img class="letter" src="characters/letters/' + oldArray[j][i] + '.png"></div>';
+        }
+        // if its ascii 65 - 90, its caps
+        else if ((oldArray[j][i] >= 65) && (oldArray[j][i] <= 90)){
+          outputString = outputString + '<div class="letterBox ans"><img class="letter" src="characters/letters/' + (oldArray[j][i] + 32) + '.png"><img class="modifier" src="characters/other/caps.png"></div>';
+        }
+        // if its between 1097 and 1122, its a double
+        else if ((oldArray[j][i] >= 1097) && (oldArray[j][i] <= 1122)){
+          outputString = outputString + '<div class="letterBox ans"><img class="letter" src="characters/letters/' + (oldArray[j][i] - 1000) + '.png"><img class="modifier" src="characters/other/double.png"></div>';
+        }
+        // if its between 2097 and 2122, its a plural
+        else if ((oldArray[j][i] >= 2097) && (oldArray[j][i] <= 2122)){
+          outputString = outputString + '<div class="letterBox ans"><img class="letter" src="characters/letters/' + (oldArray[j][i] - 2000) + '.png"><img class="modifier" src="characters/other/plural.png"></div>';
+        }
+        // else if its between -1097 and -1122, its a double plural
+        else if ((oldArray[j][i] <= -1097) && (oldArray[j][i] >= -1122)){
+          outputString = outputString + '<div class="letterBox ans"><img class="letter" src="characters/letters/' + ((oldArray[j][i]*-1) - 1000) + '.png"><img class="modifier" src="characters/other/double.png"><img class="modifier" src="characters/other/plural.png"></div>';
+        }
+        // else, just put letter in
+        else {
+          outputString = outputString + '<div class="letterBox ans"><p>' + oldArray[j][i] + '</p></div>'
+        }
+      }
+
+      outputString = outputString + '</div>';
+      
     }
 
     
-    outputString = outputString + '</div></div>';
+    outputString = outputString + '</div></div><button style="margin-top:20px;" onclick="showHide(\'ans\', \'0.9\')">ANSWERS</button>';
 
     let outputScramble = document.getElementById(outputId);
     outputScramble.innerHTML = outputString;
@@ -280,6 +328,19 @@
           array[i] = array[j];
           array[j] = temp;
       }
+  }
+
+  /* change visibility of element on click */
+  function showHide(className, maxOpacity){
+    const collection = document.getElementsByClassName(className);
+      for (let i = 0; i < collection.length; i++) {
+        if (collection[i].style.opacity == "0"){
+          collection[i].style.opacity = maxOpacity;
+        }
+        else {
+          collection[i].style.opacity = "0";
+        }
+    }
   }
   
   

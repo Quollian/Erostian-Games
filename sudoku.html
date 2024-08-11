@@ -26,7 +26,7 @@
     <br>
     
     <form id="sudoku-generator">
-      <textarea id="sudoku-input" name="sudokuInput" rows="10" cols="9">3--72----&#13;&#10;--1---534&#13;&#10;95-4---8-&#13;&#10;6-2-738--&#13;&#10;4--9-6--1&#13;&#10;--725-3-9&#13;&#10;-8---7-92&#13;&#10;764---1--&#13;&#10;----18--3&#13;&#10;</textarea>
+      <textarea id="sudoku-input" name="sudokuInput" rows="10" cols="9">4-71-----&#13;&#10;-1--49--2&#13;&#10;-623-8---&#13;&#10;--1-6--2-&#13;&#10;-2-415-8-&#13;&#10;-4--7-1--&#13;&#10;---5-164-&#13;&#10;8--69--1-&#13;&#10;-----47-3&#13;&#10;</textarea>
       <br>
       <button id="sudoku-submit">MAKE SUDOKU</button>
     </form>
@@ -42,7 +42,7 @@
 
 <style>
 
-  h2 {
+   h1, h2, h3, h4 {
     text-align: center;
   }
   form {
@@ -115,7 +115,7 @@
 
     // put them into a table if there is enough
 
-    let outputString = "<table>";
+    let outputString = '<h1>SUDOKU</h1><h4>Fill each box with numbers from 1-9!<br>Each box, row, and column must not repeat numbers.</h4><Br><BR><div id="outputFlex"><div id="outputContainer"><table>';
     if (inputArray.length < 89){
       outputString="<p>Not enough arguments to make a sudoku!</p>"
     }
@@ -148,7 +148,7 @@
         outputString = outputString + "</tr>";
       }
   
-      outputString = outputString + "</table>";
+      outputString = outputString + "</table></div></div>";
     }
   
 

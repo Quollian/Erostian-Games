@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="@quollian on IG">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Erostian Games</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+
+<body onload="normalNav([''])">
+
+    <script src="/nav.js"></script>
+    <div id="navigation"></div>
+
+  <div class="content" id="inventory">
+    
+    <h2>Umi List</h2>
+
+    <form id="userSearch">
+      <p>Search for listed umis by user</p>
+      <textarea id="user-input" name="userInput" rows="1" cols="30"></textarea>
+      <br>
+      <button id="user-submit">SEARCH</button>
+    </form>
+    
+   
+      <div class="profileInfo">
+        <div id="csvStuff"></div>
+      </div>
+
+    
+  </div>
+
+</body>
+
+</html>
+
+<style>
+
+   h1, h2, h3, h4 {
+    text-align: center;
+  }
+  form {
+    text-align: center;
+  }
+  button {
+    padding: 10px 20px;
+  }
+
+  .umisTable {
+    margin: auto;
+    padding-left: -10px;
+    border-collapse: collapse;
+    text-align: center;
+  }
+  .umisTable th {
+    background-color: #75615c;
+    color: white;
+    padding: 5px 10px;
+    border: 1px solid #75615c;
+    border-collapse: collapse;
+  }
+  .umisTable td {
+    padding: 2px 5px;
+    border: 1px solid #75615c;
+    border-collapse: collapse;
+  }
+  .umisTable tr {
+    background-color: white;
+  }
+  
+  .umisTable tr:nth-child(even) {
+    background-color: #e9dedc;
+  }
+
+  .umisTable tr:hover {
+    background-color: #b9928b;
+  }
+  
+  .umisTable td:nth-child(1), .umisTable th:nth-child(1){
+    border: none;
+    background-color: #fbf4ea;
+    text-align: right;
+  }
+
+
+
+
+</style>
+
+<script>
+
+
+  // Handling user input
+
+  let formId = 'userSearch';
+  let inputId = 'user-input';
+  let outputId = 'userBox';
+
+
+
+  const userForm = document.getElementById("userSearch");
+  const userInput = document.getElementById("user-input");
+  
+  userForm.addEventListener("submit", (e) => {
+    
+    e.preventDefault();
+
+    // globalish varibables
+    let htmlLocation = document.getElementById('csvStuff');
+    let profileString = "";
+    let profileFront = "No Umis found!";
+    let profileEnd = "";
+  
+    // Get the file via jquery ajax
+    $.ajax({
+      url: 'inventory/characters1.csv',
+      dataType: 'text',
+      async: false,
+    }).done(generateProfile);
+  
+    // get new csv
+    $.ajax({
+      url: 'inventory/characters2.csv',
+      dataType: 'text',
+      async: false,
+    }).done(generateProfile);
+    
+    // get new csv
+    $.ajax({
+      url: 'inventory/characters3.csv',
+      dataType: 'text',
+      async: false,
+    }).done(generateProfile);
+    
+    // get new csv
+    $.ajax({
+      url: 'inventory/characters4.csv',
+      dataType: 'text',
+      async: false,
+    }).done(generateProfile);
+  
+    // get new csv
+    $.ajax({
+      url: 'inventory/characters5.csv',
+      dataType: 'text',
+      async: false,
+    }).done(generateProfile);
+    
+    // get new csv
+    $.ajax({
+      url: 'inventory/characters6.csv',
+      dataType: 'text',
+      async: false,
+    }).done(generateProfile);
+    
+    // get new csv
+    $.ajax({
+      url: 'inventory/characters7.csv',
+      dataType: 'text',
+      async: false,
+    }).done(generateProfile);
+    
+    // get new csv
+    $.ajax({
+      url: 'inventory/characters8.csv',
+      dataType: 'text',
+      async: false,
+    }).done(generateProfile);
+    
+  
+    function generateProfile(data) {
+      var allRows = data.split(/\r?\n|\r/);
+      let profileRows = [];
+  
+      // Find the rows with their username
+      for (var singleRow = 0; singleRow < allRows.length; singleRow++){
+        var rowCells = allRows[singleRow].split(',');
+        //console.log(rowCells);
+        //if ((rowCells[1] == localStorage.getItem("username").toLowerCase()));
+        if (rowCells.length > 1){
+            // quickly clean up the row cells data to get rid of spaces whatevers
+            let usernameLowercase = rowCells[1].toLowerCase();
+            let usernameTrimmed = usernameLowercase.trim();
+            if (usernameTrimmed == userInput.value.toLowerCase()){
+            profileRows.push(rowCells);
+          }
+        }
+  
+      }
+      //console.log(profileRows)
+  
+      // process the data
+      // 
+      // if rows 4 is empty, replace with "none"
+      for (let i = 4; i<5; i++){
+        for (j = 0; j < profileRows.length; j++){
+          if (profileRows[j][i] == ""){
+              profileRows[j][i] = "None";
+          }
+        }
+      }
+      // if rows 8 is empty, replace with "none"
+      for (let i = 8; i<9; i++){
+        for (j = 0; j < profileRows.length; j++){
+          if (profileRows[j][i] == ""){
+              profileRows[j][i] = "None";
+          }
+        }
+      }
+      
+  
+      // Make a nice lil table
+      if (profileRows.length > 0){
+  
+        profileFront = '<h3>' + profileRows[0][1] + '\'s Umis</h3><table class="umisTable"><tr><th></th><th>CID</th><th>Gene</th><th>Past Forms</th><th>Level</th><th>XP</th><th>Damage</th><th>Tools</th></tr>';
+        profileEnd = "</table>";
+        
+        for (j = 0; j < profileRows.length; j++){
+
+          // if its a myo, I want to include a lil star
+          if (profileRows[j][9].toLowerCase() == "no"){
+            profileString = profileString + '<tr><td></td>';
+          }
+          else {
+            profileString = profileString + '<tr><td>*</td>';
+          }
+          profileString = profileString + '<td>' + profileRows[j][0] +'</td><td>' + profileRows[j][3] + '</td><td>' + profileRows[j][4] + '</td><td>' + profileRows[j][5] + '</td><td>' + profileRows[j][6] + '</td><td>' + profileRows[j][7] + '</td><td>' + profileRows[j][8]+'</td></tr>';
+        }
+        
+      }
+      
+      //console.log(profileString);
+  
+      //htmlLocation.innerHTML = profileString;
+      
+    }
+  
+    //console.log("final profile string = " + profileString);
+  
+    htmlLocation.innerHTML = profileFront + profileString + profileEnd;
+    
+  });
+
+
+</script>

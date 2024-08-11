@@ -25,9 +25,8 @@
     <br>
     
     <form id="search-generator">
-      <textarea id="search-input" name="searchInput" rows="13" cols="12">wcquihaistre&#13;&#10;iwruounyfoow&#13;&#10;fupiddlekmtw&#13;&#10;kwitebleuetj&#13;&#10;ynmrtznupcgz&#13;&#10;chudnicguhlo&#13;&#10;qzppufgqbmos&#13;&#10;sukirhyeihrc&#13;&#10;xxixhybcpupf&#13;&#10;xpdnoehcradw&#13;&#10;vgyukmzycbus&#13;&#10;zbbxpiafzqab
-      </textarea>
-      <textarea id="answers-input" name="answersInput" rows="13" cols="12">archeon,glorp,inder,kuru,piddle,quinki,umi</textarea>
+      <textarea id="search-input" name="searchInput" rows="13" cols="12">xhwiFaMuvxab&#13;&#10;kpilOnjOicmh&#13;&#10;DniqRrerNqpi&#13;&#10;qEdmEoofFEoq&#13;&#10;zrCwSqwUyhVo&#13;&#10;szyATcNRdooh&#13;&#10;sppzYGEooift&#13;&#10;ugxrIGvvbemr&#13;&#10;pbteNmhzvuqi&#13;&#10;eoDARKNESSim&#13;&#10;ppDNOITCEFNI&#13;&#10;dvukhapgzrxo&#13;&#10;</textarea>
+      <textarea id="answers-input" name="answersInput" rows="13" cols="12">danger,darkness,decay,forest,fungi,infection,venom</textarea>
       <br>
       <button id="search-submit">MAKE WORDSEARCH</button>
     </form>
@@ -45,7 +44,7 @@
 
 <style>
 
-  h2 {
+  h1, h2, h3, h4 {
     text-align: center;
   }
   form {
@@ -89,6 +88,10 @@
     margin: 0px 40px;
     font-size: 20px;
   }
+  .ans {
+    background-color: white;
+    width: 100%;
+  }
 
   
 
@@ -118,7 +121,7 @@
 
     // put them into a table if there is enough
 
-    let outputString = "<table>";
+    let outputString = '<h1>WORDSEARCH</h1><h4>Find the words listed below!</h4><Br><BR><div id="outputFlex"><div id="outputContainer"><table>';
     if (inputArray.length < 155){
       outputString="<p>Not enough arguments to make a wordsearch!</p>"
     }
@@ -135,9 +138,14 @@
           }
           else {
             
-            outputString = outputString + "<td>"
-            if((inputArray[count].charCodeAt(0) >= 97) || (inputArray[count].charCodeAt(0) <= 122)){
+            outputString = outputString + "<td>";
+            
+            if((inputArray[count].charCodeAt(0) >= 97) && (inputArray[count].charCodeAt(0) <= 122)){
               outputString = outputString + "<img src='characters/letters/" + inputArray[count].charCodeAt(0) + ".png'>";
+            }
+            else if ((inputArray[count].charCodeAt(0) >= 65) && (inputArray[count].charCodeAt(0) <= 90)){
+              let code = inputArray[count].charCodeAt(0) + 32;
+              outputString = outputString + "<div class='ans'><img src='characters/letters/" + code + ".png'></div>";
             }
             else {}
             outputString = outputString + "</td>";
@@ -164,13 +172,27 @@
       outputAString = outputAString + '<div class="answerWord"><p>' + answersArray[i] + '</p></div>'
     }
 
-    outputAString = outputAString + "</div>";
+    outputAString = outputAString + '</div></div></div><button style="margin-top:40px;" onclick="setBG(\'ans\', \'lightcoral\', \'white\')">ANSWERS</button>';
     
     let outputAnswers = document.getElementById("outputAnswers");
     outputAnswers.innerHTML = outputAString;
     
 
+    
   });
+
+  /* change bg of element on click */
+  function setBG(className, bgColour, bgColour2){
+    const collection = document.getElementsByClassName(className);
+      for (let i = 0; i < collection.length; i++) {
+        if (collection[i].style.backgroundColor == bgColour2){
+          collection[i].style.backgroundColor = bgColour;
+        }
+        else {
+          collection[i].style.backgroundColor = bgColour2;
+        }
+    }
+  }
 
   
   
